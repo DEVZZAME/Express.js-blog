@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/test.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  </head>
+  <body>
+  <%- include('nav.html') %>
+  <div class="container">
+  <h1 class="mt-4">회원 목록</h1>
+  <h2 class="mt-3">총 회원 수 <%= USER.length %></h2>
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">ID</th>
+        <th scope="col">NAME</th>
+        <th scope="col">EMAIL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if(USER.length> 0) { %>
+        <% for(let i=0; i < USER.length; i++) { %>
+      <tr>
+        <th scope="row"><%= i+1 %></th>
+        <td><%= USER[i].id %></td>
+        <td><%= USER[i].name %></td>
+        <td><%= USER[i].email %></td>
+      </tr><% } %>
+      <% } else { %>
+        <tr>
+        <td>회원 정보가 없습니다!</td>
+      </tr><% } %>
+    </tbody>
+  </table>
+
+  <form action="/users" method="POST" class="mt-5">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">USER ID</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="아이디를 입력해주세요." name="id">
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">USER NAME</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="이름을 입력해주세요." name="name">
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">USER E-MAIL</label>
+      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="이메일을 입력해주세요." name="email">
+    </div>
+    <button type="submit" class="btn btn-primary">유저 등록</button>
+  </form>
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+  </body>
+</html>
