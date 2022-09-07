@@ -37,24 +37,28 @@ router.get('/:title', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  if (req.query.title && req.query.content) {
-    const newPost = {
-      title: req.query.title,
-      content: req.query.content,
-    };
-    POSTS.push(newPost);
-    res.redirect('/posts');
-  } else if (req.body.title && req.body.content) {
-    const newPost = {
-      title: req.body.title,
-      content: req.body.content,
-    };
-    POSTS.push(newPost);
-    res.redirect('/posts');
-  } else {
-    const err = new Error('Unexpected query');
-    err.statusCode = 404;
-    throw err;
+  if (Object.keys(req.query).length >= 1) {
+    if (req.query.title && req.query.content) {
+      const newPost = {
+        title: req.query.title,
+        content: req.query.content,
+      };
+      POSTS.push(newPost);
+      res.redirect('/posts');
+    } else {
+      const err = new Error('Unexpected query');
+      err.statusCode = 404;
+      throw err;
+    }
+  } else if (req.body) {
+    if (req.body.title && req.body.content) {
+      const newPost = {
+        title: req.body.title,
+        content: req.body.content,
+      };
+      POSTS.push(newPost);
+      res.redirect('/posts');
+    }
   }
 });
 

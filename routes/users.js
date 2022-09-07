@@ -40,28 +40,33 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  if (req.query.id && req.query.name && req.query.email) {
-    const newUser = {
-      id: req.query.id,
-      name: req.query.name,
-      email: req.query.email,
-    };
-    USER.push(newUser);
-    res.redirect('/users');
-  } else if (req.body) {
-    if (req.body.id && req.body.name && req.body.email) {
+  if (Object.keys(req.query).length >= 1) {
+    if (req.query.id && req.query.name && req.query.email) {
       const newUser = {
-        id: req.body.id,
-        name: req.body.name,
-        email: req.body.email,
+        id: req.query.id,
+        name: req.query.name,
+        email: req.query.email,
       };
       USER.push(newUser);
       res.redirect('/users');
+    } else {
+      const err = new Error('Unexpected query');
+      err.statusCode = 404;
+      throw err;
     }
-  } else {
-    const err = new Error('Unexpected query');
-    err.statusCode = 404;
-    throw err;
+  } else if (req.body) {
+    if (req.body) {
+      console.log(`----------${req.body.id}----------`);
+      if (req.body.id && req.body.name && req.body.email) {
+        const newUser = {
+          id: req.body.id,
+          name: req.body.name,
+          email: req.body.email,
+        };
+        USER.push(newUser);
+        res.redirect('/users');
+      }
+    }
   }
 });
 

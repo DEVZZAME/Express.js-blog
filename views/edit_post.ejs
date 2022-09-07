@@ -13,8 +13,7 @@
     <%- include('nav.html') %>
 
     <div class="container">
-    <h1 class="mt-4">글 목록</h1>
-    <h2 class="mt-3">총 글 수 <%= POSTS.length %></h2>
+    <h1 class="mt-4">글 수정</h1>
     
     <% if(POSTS.length> 0) { %>
       <% for(let i=0; i < POSTS.length; i++) { %>
@@ -23,7 +22,7 @@
             <h5 class="card-title"><%= POSTS[i].title %></h5>
             <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
             <p class="card-text"><%= POSTS[i].content %></p>
-            <button type="submit" class="btn btn-primary" onclick="location.href=`/post/edit`">글 수정</button>
+            <button type="submit" class="btn btn-primary">글 수정</button>
             <button type="submit" class="btn btn-primary" onclick="deletePost('<%= POSTS[i].title %>');">글 삭제</button>
           </div>
         </div>
