@@ -51,3 +51,5 @@ app.use((err, req, res, next) => {
 app.listen(process.env.PORT, () => {
   console.log(`The express server is running at ${process.env.PORT}`);
 });
+
+// "start": "nodemon --watch \"./routes/*.js\" --exec \"npm run server\""
