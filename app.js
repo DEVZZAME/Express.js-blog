@@ -2,6 +2,9 @@
 const express = require('express');
 const app = express();
 
+// ENV
+require('dotenv').config();
+
 // Form 데이터 전송
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -9,23 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 // 템플릿 엔진 지정
 app.set('view engine', 'ejs');
 
-// MongoDB 설정
-// const MongoClient = require('mongodb').MongoClient;
-// MongoClient.connect(
-//   'mongodb+srv://zzame:zzame1234@cluster0.7b6ewbn.mongodb.net/?retryWrites=true&w=majority',
-//   function (에러, client) {
-//     if (에러) {
-//       return console.log(에러);
-//     }
-
-//     app.listen(8080, function () {
-//       console.log('listening on 8080');
-//     });
-//   }
-// );
-// const { MongoClient, ServerApiVersion } = require('mongodb');
-const MongoClient = require('mongodb').MongoClient;
-const ServerApiVersion = require('mongodb').MongoClient;
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri =
   'mongodb+srv://zzame:zzame1234@cluster0.7b6ewbn.mongodb.net/?retryWrites=true&w=majority';
 const client = new MongoClient(uri, {
@@ -35,7 +22,6 @@ const client = new MongoClient(uri, {
 });
 client.connect((err) => {
   const collection = client.db('test').collection('devices');
-  // perform actions on the collection object
   client.close();
 });
 
@@ -43,18 +29,17 @@ client.connect((err) => {
 app.use(express.static('views'));
 app.use(express.static('public'));
 
-// 포트 지정
-const PORT = 4000;
-
 // 라우터 관리
 const router = require('./routes/index');
 const userRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
+const boardRouter = require('./routes/boards');
 
 // 라우터별 라우팅
 app.use('/', router);
 app.use('/users', userRouter);
 app.use('/posts', postsRouter);
+app.use('/boards', boardRouter);
 
 // 에러 핸들링
 app.use((err, req, res, next) => {
@@ -63,6 +48,6 @@ app.use((err, req, res, next) => {
   res.end(err.message);
 });
 
-app.listen(PORT, () => {
-  console.log(`The express server is running at ${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`The express server is running at ${process.env.PORT}`);
 });
