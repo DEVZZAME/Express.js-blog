@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const mongoClient = require('./mongo');
+const mongoClient = require('./client');
 
 async function getPosts() {
   const client = await mongoClient.connect();
