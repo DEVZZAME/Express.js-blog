@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 
-// ENV
+// DOTENV
 require('dotenv').config();
 
 // Form 데이터 전송
@@ -11,19 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // 템플릿 엔진 지정
 app.set('view engine', 'ejs');
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri =
-  'mongodb+srv://zzame:zzame1234@cluster0.7b6ewbn.mongodb.net/?retryWrites=true&w=majority';
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-});
-client.connect((err) => {
-  const collection = client.db('test').collection('devices');
-  client.close();
-});
+// app.set('views', 'viwes');
 
 // STATIC 사용하여 디렉토리별 역할 지정
 app.use(express.static('views'));
@@ -51,5 +39,3 @@ app.use((err, req, res, next) => {
 app.listen(process.env.PORT, () => {
   console.log(`The express server is running at ${process.env.PORT}`);
 });
-
-// "start": "nodemon --watch \"./routes/*.js\" --exec \"npm run server\""
