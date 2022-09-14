@@ -76,6 +76,18 @@ router.post('/title/:title', (req, res) => {
 });
 
 // 글 삭제 기능 수행
-router.delete('/title/:title', (req, res) => {});
+router.delete('/delete/title/:title', (req, res) => {
+  const arrIndex = ARTICLE.findIndex(
+    (_article) => _article.title === req.params.title
+  );
+  if (arrIndex !== -1) {
+    ARTICLE.splice(arrIndex, 1);
+    res.send('삭제 완료!');
+  } else {
+    const err = new Error('해당 제목을 가진 글이 없습니다.');
+    err.statusCode = 404;
+    throw err;
+  }
+});
 
 module.exports = router;

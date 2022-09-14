@@ -3,7 +3,9 @@ const express = require('express');
 const app = express();
 
 // DOTENV
-require('dotenv').config();
+// require('dotenv').config();
+
+const PORT = 8080;
 
 // Form 데이터 전송
 app.use(express.json());
@@ -36,6 +38,6 @@ app.use((err, req, res, next) => {
   res.end(err.message);
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`The express server is running at ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`The express server is running at ${PORT}`);
 });

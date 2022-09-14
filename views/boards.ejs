@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tetz borad</title>
+  <title>Hansol borad</title>
   <style>
     * {
       margin: 0;
@@ -150,13 +150,13 @@
 
 <script>
   function deleteArticle(title) {
-    fetch(`board/title/${title}`, {
+    fetch(`boards/delete/title/${title}`, {
       method: 'delete',
       headers: {
         'Content-type': 'application/json'
       },
     }).then((res) => {
-      location.href = '/board';
+      location.href = '/boards';
     })
   }
 </script>
