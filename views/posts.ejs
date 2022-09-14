@@ -72,7 +72,7 @@
 
 <script>
   function deletePost(title) {
-    fetch(`http://localhost:4000/posts/${title}`, {
+    fetch(`http://localhost:8080/posts/${title}`, {
       method: 'delete',
       headers: {
         'Content-type': 'application/json'
