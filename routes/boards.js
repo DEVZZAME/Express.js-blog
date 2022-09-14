@@ -1,59 +1,81 @@
 // @ts-check
-
 const express = require('express');
 
 const router = express.Router();
 
-// MongoDB 설정
-const { MongoClient, ServerApiVersion } = require('mongodb');
-require('dotenv').config();
+const ARTICLE = [
+  {
+    title: 'title',
+    content:
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia delectus iusto fugiat autem cupiditate adipisci quas, in consectetur repudiandae, soluta, suscipit debitis veniam nobis aspernatur blanditiis ex ipsum tempore impedit.',
+  },
+  {
+    title: 'title2',
+    content:
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia delectus iusto fugiat autem cupiditate adipisci quas, in consectetur repudiandae, soluta, suscipit debitis veniam nobis aspernatur blanditiis ex ipsum tempore impedit.',
+  },
+];
 
-const client = new MongoClient(process.env.URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
+// 글 전체 목록 보여주기
+router.get('/', (req, res) => {
+  const articleLen = ARTICLE.length;
+  res.render('boards', { ARTICLE, articleCounts: articleLen });
 });
 
-async function main() {
-  const users = client.db('kdt1').collection('boards');
+// 글 쓰기 모드로 이동
+router.get('/write', (req, res) => {
+  res.render('boards_write');
+});
 
-  router.get('/board', (req, res) => {
-    res.render('board');
-  });
+// 글 추가 기능 수행
+router.post('/write', (req, res) => {
+  if (req.body.title && req.body.content) {
+    const newArticle = {
+      title: req.body.title,
+      content: req.body.content,
+    };
+    ARTICLE.push(newArticle);
+    res.redirect('/boards');
+  } else {
+    const err = new Error('요청이상');
+    err.statusCode = 404;
+    throw err;
+  }
+});
 
-  await client.close();
-}
-main();
+// 글 수정 모드로 이동
+router.get('/modify/title/:title', (req, res) => {
+  const arrIndex = ARTICLE.findIndex(
+    (_article) => _article.title === req.params.title
+  );
+  const selectedArticle = ARTICLE[arrIndex];
+
+  res.render('boards_modify', { selectedArticle });
+});
+
+// 글 수정 기능 수행
+router.post('/title/:title', (req, res) => {
+  if (req.body.title && req.body.content) {
+    const arrIndex = ARTICLE.findIndex(
+      (_article) => _article.title === req.params.title
+    );
+    if (arrIndex !== -1) {
+      ARTICLE[arrIndex].title = req.body.title;
+      ARTICLE[arrIndex].content = req.body.content;
+      res.redirect('/boards');
+    } else {
+      const err = new Error('요청하신 제목이 없습니다.');
+      err.statusCode = 404;
+      throw err;
+    }
+  } else {
+    const err = new Error('요청 쿼리 이상');
+    err.statusCode = 404;
+    throw err;
+  }
+});
+
+// 글 삭제 기능 수행
+router.delete('/title/:title', (req, res) => {});
+
 module.exports = router;
-// console.log(arr);
-// const data = users.find({ age: { $gte: 5 } });
-// const arr = await data.toArray();
-// await client.connect(err);
-// await users.deleteMany({});
-// await users.updateOne({ age: 4 }, { $set: { age: 40 } });
-// await users.updateMany({ age: { $lte: 5 } }, { $set: { age: 4, old: 'no' } });
-// await users.deleteMany({
-//   age: { $gte: 5 },
-// });
-// await users.deleteOne({ name: 'pororo' });
-// await users.insertOne({
-//   name: 'hansol',
-//   age: 'idk',
-// });
-// await users.insertMany([
-//   {
-//     name: 'pororo',
-//     age: 5,
-//   },
-//   {
-//     name: 'loopy',
-//     age: 6,
-//   },
-//   {
-//     name: 'crong',
-//     age: 4,
-//   },
-// ]);
-// const data = users.find({ });
-// await data.forEach(console.log);
-// console.log(data);
